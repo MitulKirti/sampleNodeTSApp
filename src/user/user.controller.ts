@@ -4,25 +4,24 @@ import { User } from './user.entity';
 
 const router = express.Router();
 
-router.get('/', (req, res) => {
-    res.json(getAllUsers());
+router.get('/', async (req, res) => {
+    res.json(await getAllUsers());
 });
 
-router.get('/:id', (req, res) => {
+router.get('/:id', async (req, res) => {
     try {
-        const id = parseInt(req.params.id);
-        const user = getUserById(id);
+        const id = req.params.id;
+        const user = await getUserById(id);
         res.json(user);
     } catch (error) {
         res.status(404).json(error);
     }
 });
 
-router.post('/', (req, res) => {
+router.post('/', async (req, res) => {
     try {
         const body = req.body;
-        console.log(body);
-        createUser(body);
+        await createUser(body);
         res.json({ message: 'User created successfully' });
     }
     catch (error) {
@@ -30,32 +29,32 @@ router.post('/', (req, res) => {
     }
 });
 
-router.put('/:id', (req, res) => {
+router.put('/:id', async (req, res) => {
     try {
         const body = req.body as Omit<User, 'id'>;
-        const id = parseInt(req.params.id);
-        updateUser(id, body);
+        const id = req.params.id;
+        await updateUser(id, body);
         res.json({ message: 'User updated successfully' });
     } catch (error) {
         res.status(404).json(error);
     }
 });
 
-router.patch('/:id', (req, res) => {
+router.patch('/:id', async (req, res) => {
     try {
         const body = req.body as Omit<User, 'id'>;
-        const id = parseInt(req.params.id);
-        updateUser(id, body);
+        const id = req.params.id;
+        await updateUser(id, body);
         res.json({ message: 'User patched successfully' });
     } catch (error) {
         res.status(404).json(error);
     }
 });
 
-router.delete('/:id', (req, res) => {
+router.delete('/:id', async (req, res) => {
     try {
-        const id = parseInt(req.params.id);
-        removeUser(id);
+        const id = req.params.id;
+        await removeUser(id);
         res.json({ message: 'User removed successfully' });
     } catch (error) {
         res.status(404).json(error);
